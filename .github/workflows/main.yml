@@ -35,7 +35,7 @@ jobs:
         echo "ECR_REPOSITORY=fast" >> $GITHUB_ENV #본인 ecr레포에 맞게 수정
         echo "IMAGE_TAG=${{ github.run_number }}" >> $GITHUB_ENV
         echo "GIT_EMAIL=qwerqwsd@gmail.com" >> $GITHUB_ENV
-        echo "GIT_NAME=qwerqwsd >> $GITHUB_ENV
+        echo "GIT_NAME=qwerqwsd" >> $GITHUB_ENV
    
     - name: Docker Image Build
       id: build-image
