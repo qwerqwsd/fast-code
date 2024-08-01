@@ -34,8 +34,8 @@ jobs:
         echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" >> $GITHUB_ENV
         echo "ECR_REPOSITORY=fast" >> $GITHUB_ENV #본인 ecr레포에 맞게 수정
         echo "IMAGE_TAG=${{ github.run_number }}" >> $GITHUB_ENV
-        echo "GIT_EMAIL=pcmin929@gmail.com" >> $GITHUB_ENV
-        echo "GIT_NAME=pcmin929" >> $GITHUB_ENV
+        echo "GIT_EMAIL=qwerqwsd@gmail.com" >> $GITHUB_ENV
+        echo "GIT_NAME=JiminPark >> $GITHUB_ENV
    
     - name: Docker Image Build
       id: build-image
@@ -50,7 +50,7 @@ jobs:
     - name: Checkout Deployment Repository
       uses: actions/checkout@v4
       with:
-        repository: pcmin929/deployment #본인에 맞게 수정
+        repository: qwerqwsd/deployment #본인에 맞게 수정
         ref: main  # branch
         token: ${{ secrets.GH_TOKEN }}
 
