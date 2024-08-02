@@ -56,7 +56,7 @@ pipeline{
         
                 stage('docker image push'){
             steps{
-                docker.withRegistry("278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:credential-id") {
+                docker.withRegistry("278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:ecr") {
                 docker.image("${ECR}:${currentBuild.number}").push()
                 }
                     
