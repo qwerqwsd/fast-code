@@ -6,6 +6,7 @@ pipeline{
         GITWEBADD='https://github.com/qwerqwsd/fast-code.git'
         GITSSHADD='git@github.com:qwerqwsd/deployment'
         GITCREDENTIAL='git_cre'
+        ECR='278934099200.dkr.ecr.ap-northeast-2.amazonaws.com/fast'
         DOCKERHUB='qwerqwsd/fast'
         DOCKERHUBCREDENTIAL='docker_cre'
     }
@@ -34,11 +35,10 @@ pipeline{
                     message: "STARTED: ${currentBuild.number}"
                 )
 
-
-
-
                 sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
                 sh "docker build -t ${DOCKERHUB}:latest ."
+                sh "docker build -t ${ECR}:${currentBuild.number} ."
+                sh "docker build -t ${ECR}:latest ."
                 // currentBuild.number 젠킨스가 제공하는 빌드넘버 변수
                 // oolralra/fast:<빌드넘버> 와 같은 이미지가 만들어질 예정.
                  
@@ -52,19 +52,27 @@ pipeline{
                 }
             }
         }
+
+        
                 stage('docker image push'){
             steps{
-
-
+                docker.withRegistry("278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:credential-id") {
+                docker.image("${ECR}:${currentBuild.number}").push()
+                }
+                    
                  withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
                     sh "docker push ${DOCKERHUB}:${currentBuild.number}"
                     sh "docker push ${DOCKERHUB}:latest"
             }
+
+                sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+                sh "docker image rm -f ${DOCKERHUB}:latest"
+                sh "docker image rm -f ${ECR}:${currentBuild.number}"
+                sh "docker image rm -f ${ECR}:latest"
             }
             post{
                 failure{
-                    sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
-                    sh "docker image rm -f ${DOCKERHUB}:latest"
+
                 }
                 success{
                     sh "echo imagebuild successed"
@@ -77,13 +85,13 @@ pipeline{
                 git credentialsId: GITCREDENTIAL, url: GITSSHADD, branch: 'main'
                 sh "git config --global user.email ${GITEMAIL}"
                 sh "git config --global user.name ${GITNAME}"
-                sh "sed -i 's@${DOCKERHUB}:.*@${DOCKERHUB}:${currentBuild.number}@g' fast.yml"
+                sh "sed -i 's@${ECR}:.*@${ECR}:${currentBuild.number}@g' fast.yml"
 
                 sh "git add ."
                 sh "git branch -M main"
                 sh "git commit -m 'fixed tag ${currentBuild.number}'"
                 sh "git remote remove origin"
-                sh "git remote add origin ${GITSSHADD}"
+                sh "git remote add origin $gi{GITSSHADD}"
                 sh "git push origin main"
             }
             post {
@@ -95,7 +103,5 @@ pipeline{
                 }
             }
         }
-       
-
     }
 }
