@@ -29,7 +29,7 @@ pipeline{
             steps{
 
                 slackSend (
-                    channel: '#dep02',
+                    channel: '#d',
                     color: '#FFFF00',
                     message: "STARTED: ${currentBuild.number}"
                 )
