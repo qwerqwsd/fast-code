@@ -25,17 +25,19 @@ pipeline{
                 }
             }
         }
-                stage('start1'){
+                stage('docker image build'){
             steps{
-                sh "echo hello Jenkins!!"
-                 
+                sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
+                sh "docker build -t ${DOCKERHUB}:latest ."
+                //currentBuild.number
+                //oolralra/fast:<buildnumber>
             }
             post{
                 failure{
-                    sh "echo failed"
+                    sh "echo imagebuild failed"
                 }
                 success{
-                    sh "echo failed"
+                    sh "echo imagebuild successed"
                 }
             }
         }
