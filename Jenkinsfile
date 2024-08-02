@@ -25,25 +25,12 @@ pipeline{
                 }
             }
         }
-                stage('docker image build'){
+                        stage('iamgebuild'){
             steps{
-                 withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
-                    sh "docker push ${DOCKERHUB}:${currentBuild.number}"
-                    sh "docker push ${DOCKERHUB}:latest"
-            }
-            }
-            post{
-                failure{
-                    sh "echo imagebuild failed"
-                }
-                success{
-                    sh "echo imagebuild successed"
-                }
-            }
-        }
-                stage('start2'){
-            steps{
-                sh "echo hello Jenkins!!"
+                sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
+                sh "docker build -t ${DOCKERHUB}:latest ."
+                // currentBuild.number 젠킨스가 제공하는 빌드넘버 변수
+                // oolralra/fast:<빌드넘버> 와 같은 이미지가 만들어질 예정.
                  
             }
             post{
@@ -55,6 +42,26 @@ pipeline{
                 }
             }
         }
+                stage('docker image push'){
+            steps{
+
+
+                 withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
+                    sh "docker push ${DOCKERHUB}:${currentBuild.number}"
+                    sh "docker push ${DOCKERHUB}:latest"
+            }
+            }
+            post{
+                failure{
+                    sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+                    sh "docker image rm -f ${DOCKERHUB}:latest"
+                }
+                success{
+                    sh "echo imagebuild successed"
+                }
+            }
+        }
+
                 stage('start3'){
             steps{
                 sh "echo hello Jenkins!!"
