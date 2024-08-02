@@ -27,10 +27,9 @@ pipeline{
         }
                 stage('docker image build'){
             steps{
-                sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
-                sh "docker build -t ${DOCKERHUB}:latest ."
-                //currentBuild.number
-                //oolralra/fast:<buildnumber>
+                 withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
+                    sh "docker push ${DOCKERHUB}:${currentBuild.number}"
+                    sh "docker push ${DOCKERHUB}:latest"
             }
             post{
                 failure{
