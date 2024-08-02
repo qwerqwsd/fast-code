@@ -56,10 +56,11 @@ pipeline{
         
                 stage('docker image push'){
             steps{
+                script{
                 docker.withRegistry("278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:ecr") {
                 docker.image("${ECR}:${currentBuild.number}").push()
                 }
-                    
+                    }
                  withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
                     sh "docker push ${DOCKERHUB}:${currentBuild.number}"
                     sh "docker push ${DOCKERHUB}:latest"
@@ -72,6 +73,7 @@ pipeline{
             }
             post{
                 failure{
+                    sh "echo failed"
 
                 }
                 success{
