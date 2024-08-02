@@ -26,7 +26,7 @@ pipeline{
                 }
             }
         }
-                        stage('iamgebuild'){
+                        stage('imagebuild'){
             steps{
 
                 slackSend (
@@ -58,7 +58,7 @@ pipeline{
                 stage('docker image push'){
             steps{
                 script{
-                docker.withRegistry("278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:ecr") {
+                docker.withRegistry("https://278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:ecr") {
                 def customImage = docker.build("${ECR}:${currentBuild.number}")
                 customImage.push()
                 }
