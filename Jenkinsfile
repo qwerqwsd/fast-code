@@ -4,7 +4,7 @@ pipeline{
         GITNAME='qwerqwsd'
         GITMAIL='qwerqwsd@gmail.com'
         GITWEBADD='https://github.com/qwerqwsd/fast-code.git'
-        GITSSHADD='git@github.com:qwerqwsd/fast-code.git'
+        GITSSHADD='git@github.com:qwerqwsd/deployment'
         GITCREDENTIAL='gir_cre'
         DOCKERHUB='qwerqwsd/fast'
         DOCKERHUBCREDENTIAL='docker_cre'
@@ -62,10 +62,31 @@ pipeline{
             }
         }
 
-                stage('start3'){
+                stage('EKS manifest file update'){
             steps{
-                sh "echo hello Jenkins!!"
-                 
+                git credentialsId: GITCREDENTIAL, url: GITSSHADD, branch: 'main'
+                sh "git config --global user.email ${GITEMAIL}"
+                sh "git config --global user.name ${GITNAME}"
+                sh "sed -i 's@${DOCKERHUB}:.*@${DOCKERHUB}:${currentBuild.number}@g' fast.yml"
+
+                sh "git add ."
+                sh "git branch -M main"
+                sh "git commit -m 'fixed tag ${currentBuild.number}'"
+                sh "git remote remove origin"
+                sh "git remote add origin ${GITSSHADD}"
+            }
+            post{
+                failure{
+                    sh "echo failed"
+                }
+                success{
+                    sh "echo failed"
+                }
+            }
+        }
+                        stage('push'){
+            steps{
+                sh "git push origin main"
             }
             post{
                 failure{
