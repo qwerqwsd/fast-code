@@ -6,7 +6,7 @@ pipeline{
         stage(start){
             steps{
                 sh "echo hello Jenkins!!"
-                post 
+                 
             }
             post{
                 failure{
