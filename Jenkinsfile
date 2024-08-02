@@ -34,7 +34,7 @@ pipeline{
                     color: '#FFFF00',
                     message: "STARTED: ${currentBuild.number}"
                 )
-
+                sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
                 sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
                 sh "docker build -t ${DOCKERHUB}:latest ."
                 sh "docker build -t ${ECR}:${currentBuild.number} ."
@@ -93,7 +93,7 @@ pipeline{
                 sh "git branch -M main"
                 sh "git commit -m 'fixed tag ${currentBuild.number}'"
                 sh "git remote remove origin"
-                sh "git remote add origin $gi{GITSSHADD}"
+                sh "git remote add origin ${GITSSHADD}"
                 sh "git push origin main"
             }
             post {
@@ -105,5 +105,7 @@ pipeline{
                 }
             }
         }
+       
+
     }
 }
