@@ -62,8 +62,8 @@ pipeline{
             }
         }
 
-                stage('EKS manifest file update'){
-            steps{
+                       stage('EKS manifest file update') {
+            steps {
                 git credentialsId: GITCREDENTIAL, url: GITSSHADD, branch: 'main'
                 sh "git config --global user.email ${GITEMAIL}"
                 sh "git config --global user.name ${GITNAME}"
@@ -74,29 +74,18 @@ pipeline{
                 sh "git commit -m 'fixed tag ${currentBuild.number}'"
                 sh "git remote remove origin"
                 sh "git remote add origin ${GITSSHADD}"
-            }
-            post{
-                failure{
-                    sh "echo failed"
-                }
-                success{
-                    sh "echo failed"
-                }
-            }
-        }
-                        stage('push'){
-            steps{
                 sh "git push origin main"
             }
-            post{
-                failure{
-                    sh "echo failed"
+            post {
+                failure {
+                    sh "echo manifest update failed"
                 }
-                success{
-                    sh "echo failed"
+                success {
+                    sh "echo manifest update success"
                 }
             }
         }
+       
+
     }
-    
 }
