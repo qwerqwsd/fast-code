@@ -27,6 +27,16 @@ pipeline{
         }
                         stage('iamgebuild'){
             steps{
+
+                slackSend (
+                    channel: '#dep02',
+                    color: '#FFFF00',
+                    message: "STARTED: ${currentBuild.number}"
+                )
+
+
+
+
                 sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
                 sh "docker build -t ${DOCKERHUB}:latest ."
                 // currentBuild.number 젠킨스가 제공하는 빌드넘버 변수
