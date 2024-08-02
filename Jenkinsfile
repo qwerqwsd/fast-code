@@ -34,11 +34,12 @@ pipeline{
                     color: '#FFFF00',
                     message: "STARTED: ${currentBuild.number}"
                 )
+
                 sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
                 // sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
                 // sh "docker build -t ${DOCKERHUB}:latest ."
-                sh "docker build -t ${ECR}:${currentBuild.number} ."
-                sh "docker build -t ${ECR}:latest ."
+                // sh "docker build -t ${ECR}:${currentBuild.number} ."
+                // sh "docker build -t ${ECR}:latest ."
                 // currentBuild.number 젠킨스가 제공하는 빌드넘버 변수
                 // oolralra/fast:<빌드넘버> 와 같은 이미지가 만들어질 예정.
                  
@@ -58,7 +59,8 @@ pipeline{
             steps{
                 script{
                 docker.withRegistry("278934099200.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:ecr") {
-                docker.image("${ECR}:${currentBuild.number}").push()
+                def customImage = docker.build("${ECR}:${currentBuild.number}")
+                customImage.push()
                 }
                     }
             //      withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
@@ -69,7 +71,7 @@ pipeline{
                 // sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
                 // sh "docker image rm -f ${DOCKERHUB}:latest"
                 sh "docker image rm -f ${ECR}:${currentBuild.number}"
-                sh "docker image rm -f ${ECR}:latest"
+                // sh "docker image rm -f ${ECR}:latest"
             }
             post{
                 failure{
