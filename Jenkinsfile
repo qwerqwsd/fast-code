@@ -11,7 +11,21 @@ pipeline{
     }
     stages {
 
-        stage('start'){
+        stage('Checkout Github'){
+            steps{
+                checkout([$class: 'GitSCM',branches: [[name: '*/main']], extensions: [],
+                userRemoteConfigs: [[credentialsId: GITCREDENTIAL, url: GITWEBADD]]])
+            }
+            post{
+                failure{
+                    sh "echo failed"
+                }
+                success{
+                    sh "echo failsed"
+                }
+            }
+        }
+                stage('start1'){
             steps{
                 sh "echo hello Jenkins!!"
                  
@@ -25,7 +39,7 @@ pipeline{
                 }
             }
         }
-                stage('start'){
+                stage('start2'){
             steps{
                 sh "echo hello Jenkins!!"
                  
@@ -39,21 +53,7 @@ pipeline{
                 }
             }
         }
-                stage('start'){
-            steps{
-                sh "echo hello Jenkins!!"
-                 
-            }
-            post{
-                failure{
-                    sh "echo failed"
-                }
-                success{
-                    sh "echo failed"
-                }
-            }
-        }
-                stage('start'){
+                stage('start3'){
             steps{
                 sh "echo hello Jenkins!!"
                  
