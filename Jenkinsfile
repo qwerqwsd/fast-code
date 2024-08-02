@@ -35,8 +35,8 @@ pipeline{
                     message: "STARTED: ${currentBuild.number}"
                 )
                 sh 'rm -f ~/.dockercfg ~/.docker/config.json || true'
-                sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
-                sh "docker build -t ${DOCKERHUB}:latest ."
+                // sh "docker build -t ${DOCKERHUB}:${currentBuild.number} ."
+                // sh "docker build -t ${DOCKERHUB}:latest ."
                 sh "docker build -t ${ECR}:${currentBuild.number} ."
                 sh "docker build -t ${ECR}:latest ."
                 // currentBuild.number 젠킨스가 제공하는 빌드넘버 변수
@@ -61,13 +61,13 @@ pipeline{
                 docker.image("${ECR}:${currentBuild.number}").push()
                 }
                     }
-                 withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
-                    sh "docker push ${DOCKERHUB}:${currentBuild.number}"
-                    sh "docker push ${DOCKERHUB}:latest"
-            }
+            //      withDockerRegistry(credentialsId: DOCKERHUBCREDENTIAL, url: '') {
+            //         sh "docker push ${DOCKERHUB}:${currentBuild.number}"
+            //         sh "docker push ${DOCKERHUB}:latest"
+            // }
 
-                sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
-                sh "docker image rm -f ${DOCKERHUB}:latest"
+                // sh "docker image rm -f ${DOCKERHUB}:${currentBuild.number}"
+                // sh "docker image rm -f ${DOCKERHUB}:latest"
                 sh "docker image rm -f ${ECR}:${currentBuild.number}"
                 sh "docker image rm -f ${ECR}:latest"
             }
