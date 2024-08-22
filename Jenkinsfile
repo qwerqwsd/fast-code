@@ -3,8 +3,6 @@ pipeline{
     
     stages {
         stage('start'){
-            steps{
-                stage('start'){
                     steps{
                         sh "echo hello jenkins!!!"
                     }
@@ -15,10 +13,7 @@ pipeline{
                         success {
                             sh "echo success"
                         }
-                    }
-                }
-
-            }
+                    }            
         }
     }
 }
