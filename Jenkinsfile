@@ -1,6 +1,14 @@
 pipeline{
     agent any
-    
+    environment {
+        GITNAME = 'qwerqwsd'
+        GITMAIL = 'jiminpark1324120@gmail.com'
+        GITWEBADD = 'https://github.com/qwerqwsd/fast-code.git'
+        GITSSHADD = 'git@github.com:qwerqwsd/fast-code.git'
+        GITCREDENTIAL = 'git_cre'
+        DOCKERHUB = 'qwerqwsd/fast'
+        DOCKERHUBCREDENTIAL = 'docker_cre'
+    }
     stages {
         stage('start'){
                     steps{
