@@ -53,6 +53,8 @@
 // }
 
 
+
+
 pipeline{
     agent any
     environment{
@@ -77,7 +79,7 @@ pipeline{
                     sh "echo failed"
                 }
                 success{
-                    sh "echo failsed"
+                    sh "echo success"
                 }
             }
         }
