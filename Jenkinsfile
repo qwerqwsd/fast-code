@@ -11,7 +11,6 @@ pipeline{
         ECR='178020491921.dkr.ecr.ap-northeast-2.amazonaws.com/fast'
         DOCKERHUB='qwerqwsd/fast'
         DOCKERHUBCREDENTIAL='docker_cre'
-        ecr='ecr'
     }
     stages {
 
@@ -44,7 +43,7 @@ pipeline{
                 // sh "docker build -t ${ECR}:${currentBuild.number} ."
                 // sh "docker build -t ${ECR}:latest ."
                 // currentBuild.number 젠킨스가 제공하는 빌드넘버 변수
-                // oolralra/fast:<빌드넘버> 와 같은 이미지가 만들어질 예정.
+                // qwerqwsd/fast:<빌드넘버> 와 같은 이미지가 만들어질 예정.
                  
             }
             post{
