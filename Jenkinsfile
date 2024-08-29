@@ -11,6 +11,7 @@ pipeline{
         ECR='278934099200.dkr.ecr.ap-northeast-2.amazonaws.com/fast'
         DOCKERHUB='qwerqwsd/fast'
         DOCKERHUBCREDENTIAL='docker_cre'
+        ecr='ecr'
     }
     stages {
 
