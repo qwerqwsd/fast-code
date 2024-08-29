@@ -8,7 +8,7 @@ pipeline{
         GITWEBADD='https://github.com/qwerqwsd/fast-code.git'
         GITSSHADD='git@github.com:qwerqwsd/deployment'
         GITCREDENTIAL='git_cre'
-        ECR='278934099200.dkr.ecr.ap-northeast-2.amazonaws.com/fast'
+        ECR='178020491921.dkr.ecr.ap-northeast-2.amazonaws.com/fast'
         DOCKERHUB='qwerqwsd/fast'
         DOCKERHUBCREDENTIAL='docker_cre'
         ecr='ecr'
@@ -61,7 +61,7 @@ pipeline{
                 stage('docker image push'){
             steps{
                 script{
-                docker.withRegistry("https://278934099200.dkr.ecr.ap-northeast-2.amazonaws.com/fast", "ecr:ap-northeast-2:ecr") {
+                docker.withRegistry("https://178020491921.dkr.ecr.ap-northeast-2.amazonaws.com/", "ecr:ap-northeast-2:ecr") {
                 def customImage = docker.build("${ECR}:${currentBuild.number}")
                 customImage.push()
                 }
